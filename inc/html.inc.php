@@ -169,11 +169,12 @@ function plugins_list($host, $selected_plugins = array()) {
 	# first the ones defined as ordered
 	foreach($CONFIG['overview'] as $plugin) {
 		if (in_array($plugin, $plugins)) {
-			printf("<li><a %shref=\"%shost.php?h=%s&amp;p=%s\">%s</a></li>\n",
+      $host_url = build_url(
+        'host.php', array('h' => $host, 'p' => $plugin), $_GET['s']
+      );
+			printf("<li><a %s href=\"%s\">%s</a></li>\n",
 				selected_plugin($plugin, $selected_plugins),
-				htmlentities($CONFIG['weburl']),
-				urlencode($host),
-				urlencode($plugin),
+        $host_url,
 				htmlentities($plugin)
 			);
 		}
@@ -182,11 +183,12 @@ function plugins_list($host, $selected_plugins = array()) {
 	# other plugins
 	foreach($plugins as $plugin) {
 		if (!in_array($plugin, $CONFIG['overview'])) {
-			printf("<li><a %shref=\"%shost.php?h=%s&amp;p=%s\">%s</a></li>\n",
+      $host_url = build_url(
+        'host.php', array('h' => $host, 'p' => $plugin), $_GET['s']
+      );
+			printf("<li><a %s href=\"%s\">%s</a></li>\n",
 				selected_plugin($plugin, $selected_plugins),
-				htmlentities($CONFIG['weburl']),
-				urlencode($host),
-				urlencode($plugin),
+        $host_url,
 				htmlentities($plugin)
 			);
 		}
