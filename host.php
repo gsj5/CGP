@@ -30,6 +30,7 @@ if (!strlen($host) || !$plugins = collectd_plugins($host)) {
 plugins_list($host, $selected_plugins);
 
 echo '<div class="graphs">';
+timerange_selector();
 plugin_header($host, $plugin);
 foreach ($selected_plugins as $selected_plugin) {
 	if (in_array($selected_plugin, $plugins)) {
