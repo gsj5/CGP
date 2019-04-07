@@ -148,7 +148,7 @@ function plugin_header($host, $plugin) {
 		htmlentities($CONFIG['weburl']),
 		urlencode($host),
 		urlencode($plugin),
-		htmlentities($plugin));
+		htmlentities($plugin ? $plugin : 'overview'));
 }
 
 function plugins_list($host, $selected_plugins = array()) {
