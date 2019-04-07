@@ -217,6 +217,23 @@ function selected_timerange($value1, $value2) {
 	return '';
 }
 
+function timerange_selector() {
+	global $CONFIG;
+	$seconds = GET('s');
+	$args = GET();
+	print '<ul class="time-range">' . "\n";
+	foreach($CONFIG['term'] as $key => $s) {
+		$args['s'] = $s;
+		$selected = selected_timerange($seconds, $s);
+		printf('<li><a %s href="%s%s">%s</a></li>'."\n",
+			$selected,
+			htmlentities($CONFIG['weburl']),
+			htmlentities(build_url('detail.php', $args)),
+			htmlentities($key));
+	}
+	print "</ul>\n";
+}
+
 function host_summary($cat, $hosts) {
 	global $CONFIG;
 
@@ -331,7 +348,7 @@ function breadcrumbs() {
 }
 
 # generate graph url's for a plugin of a host
-function graphs_from_plugin($host, $plugin, $overview=false) {
+function graphs_from_plugin($host, $plugin, $overview=false, $seconds=0) {
 	global $CONFIG;
 
 	if (!$plugindata = collectd_plugindata($host, $plugin))

@@ -23,7 +23,6 @@ $pinstance = GET('pi');
 $category = GET('c');
 $type = GET('t');
 $tinstance = GET('ti');
-$seconds = GET('s');
 
 $selected_plugins = !$plugin ? $CONFIG['overview'] : array($plugin);
 
@@ -48,18 +47,7 @@ plugins_list($host, $selected_plugins);
 echo '<div class="graphs">';
 plugin_header($host, $plugin);
 
-$args = GET();
-print '<ul class="time-range">' . "\n";
-foreach($CONFIG['term'] as $key => $s) {
-	$args['s'] = $s;
-	$selected = selected_timerange($seconds, $s);
-	printf('<li><a %s href="%s%s">%s</a></li>'."\n",
-		$selected,
-		htmlentities($CONFIG['weburl']),
-		htmlentities(build_url('detail.php', $args)),
-		htmlentities($key));
-}
-print "</ul>\n";
+timerange_selector();
 
 if ($CONFIG['graph_type'] == 'canvas') {
 	chdir($CONFIG['webdir']);
