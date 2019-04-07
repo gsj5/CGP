@@ -350,6 +350,10 @@ function graphs_from_plugin($host, $plugin, $overview=false) {
 			continue;
 		}
 
+		if ($overview && isset($CONFIG['overview_filter_fn']) && !$CONFIG['overview_filter_fn']($items)) {
+			continue;
+		}
+
 		$items['h'] = $host;
 
 		$time = array_key_exists($plugin, $CONFIG['time_range'])
