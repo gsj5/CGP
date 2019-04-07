@@ -373,9 +373,10 @@ function graphs_from_plugin($host, $plugin, $overview=false, $seconds=0) {
 
 		$items['h'] = $host;
 
-		$time = array_key_exists($plugin, $CONFIG['time_range'])
-			? $CONFIG['time_range'][$plugin]
-			: $CONFIG['time_range']['default'];
+		if (!isset($_GET['s']))
+			$_GET['s'] = array_key_exists($plugin, $CONFIG['time_range'])
+				? $CONFIG['time_range'][$plugin]
+				: $CONFIG['time_range']['default'];
 
 		if ($CONFIG['graph_type'] == 'canvas') {
 			chdir($CONFIG['webdir']);
@@ -383,13 +384,12 @@ function graphs_from_plugin($host, $plugin, $overview=false, $seconds=0) {
 			isset($items['pi']) ? $_GET['pi'] = $items['pi'] : $_GET['pi'] = '';
 			isset($items['t']) ? $_GET['t'] = $items['t'] : $_GET['t'] = '';
 			isset($items['ti']) ? $_GET['ti'] = $items['ti'] : $_GET['ti'] = '';
-			$_GET['s'] = $time;
 			include $CONFIG['webdir'].'/graph.php';
 		} else {
 			printf('<a href="%1$s%2$s"><img src="%1$s%3$s"></a>'."\n",
 				htmlentities($CONFIG['weburl']),
-				htmlentities(build_url('detail.php', $items, $time)),
-				htmlentities(build_url('graph.php', $items, $time))
+				htmlentities(build_url('detail.php', $items, $_GET['s'])),
+				htmlentities(build_url('graph.php', $items, $_GET['s']))
 			);
 		}
 	}
