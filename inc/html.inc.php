@@ -221,7 +221,7 @@ function selected_timerange($value1, $value2) {
 
 function timerange_selector($base) {
 	global $CONFIG;
-	$seconds = GET('s');
+	$seconds = get_timerange();
 	$args = GET();
 	print '<ul class="time-range">' . "\n";
 	foreach($CONFIG['term'] as $key => $s) {
@@ -375,23 +375,19 @@ function graphs_from_plugin($host, $plugin, $overview=false, $seconds=0) {
 
 		$items['h'] = $host;
 
-		if (!isset($_GET['s']))
-			$_GET['s'] = array_key_exists($plugin, $CONFIG['time_range'])
-				? $CONFIG['time_range'][$plugin]
-				: $CONFIG['time_range']['default'];
-
 		if ($CONFIG['graph_type'] == 'canvas') {
 			chdir($CONFIG['webdir']);
 			isset($items['p']) ? $_GET['p'] = $items['p'] : $_GET['p'] = '';
 			isset($items['pi']) ? $_GET['pi'] = $items['pi'] : $_GET['pi'] = '';
 			isset($items['t']) ? $_GET['t'] = $items['t'] : $_GET['t'] = '';
 			isset($items['ti']) ? $_GET['ti'] = $items['ti'] : $_GET['ti'] = '';
+			$_GET['s'] = get_timerange();
 			include $CONFIG['webdir'].'/graph.php';
 		} else {
 			printf('<a href="%1$s%2$s"><img src="%1$s%3$s"></a>'."\n",
 				htmlentities($CONFIG['weburl']),
-				htmlentities(build_url('detail.php', $items, $_GET['s'])),
-				htmlentities(build_url('graph.php', $items, $_GET['s']))
+				htmlentities(build_url('detail.php', $items)),
+				htmlentities(build_url('graph.php', $items))
 			);
 		}
 	}
@@ -404,14 +400,22 @@ function build_url($base, $items, $s=NULL) {
 	if (!is_array($items))
 		return false;
 
-	if (!is_numeric($s))
-		$s = $CONFIG['time_range']['default'];
-
 	// Remove all empty values
 	$items = array_filter($items, 'strlen');
 
 	if (!isset($items['s']))
-		$items['s'] = $s;
+		$items['s'] = get_timerange($s);
 
 	return "$base?" . http_build_query($items, '', '&');
+}
+
+function get_timerange($s=NULL) {
+	global $CONFIG;
+
+	if (is_numeric($s))
+		return $s;
+	else if (isset($_GET['s']) && is_numeric($_GET['s']))
+		return $_GET['s'];
+	else
+		return $CONFIG['time_range']['default'];
 }
