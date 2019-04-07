@@ -217,7 +217,7 @@ function selected_timerange($value1, $value2) {
 	return '';
 }
 
-function timerange_selector() {
+function timerange_selector($base) {
 	global $CONFIG;
 	$seconds = GET('s');
 	$args = GET();
@@ -228,7 +228,7 @@ function timerange_selector() {
 		printf('<li><a %s href="%s%s">%s</a></li>'."\n",
 			$selected,
 			htmlentities($CONFIG['weburl']),
-			htmlentities(build_url('detail.php', $args)),
+			htmlentities(build_url($base, $args)),
 			htmlentities($key));
 	}
 	print "</ul>\n";

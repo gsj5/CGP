@@ -47,7 +47,7 @@ plugins_list($host, $selected_plugins);
 echo '<div class="graphs">';
 plugin_header($host, $plugin);
 
-timerange_selector();
+timerange_selector('detail.php');
 
 if ($CONFIG['graph_type'] == 'canvas') {
 	chdir($CONFIG['webdir']);
