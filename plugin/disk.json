@@ -18,7 +18,6 @@
 	"disk_octets": {
 		"title": "Disk Traffic ({{PI}}) on {{HOST}}",
 		"vertical": "Bytes per second",
-		"type": "io",
 		"legend": {
 			"read": {
 				"name": "Read",
